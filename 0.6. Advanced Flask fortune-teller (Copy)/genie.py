@@ -2,6 +2,25 @@ from flask import Flask, render_template, request, redirect, url_for
 import random
 
 app = Flask(__name__)
+app.config['SECRET_KEY']="PASSWORD"
+
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template("login.html")
+    else: #the request is a post
+        name = request.form['username']
+        birthmonth = request.form['birthmonth']
+        if name == 'genie':
+            login_session["admin"] = True
+        else:
+            login_session["admin"] = False
+        return redirect(url_for('home'))
+    
+@app.route('/home')
+def home():
+    return render_template("user.html", admin=login_session['admin'])
 
 fortunes = {
     "January": "This year brings new beginnings and fresh starts. Embrace the changes.",
@@ -18,21 +37,9 @@ fortunes = {
     "December": "Joy and celebration will fill your days. Share your happiness."
 }
 
-@app.route('/home', methods=['GET', 'POST'])
-def hello_world():
-    if request.method == 'GET':
-        return render_template('home.html')
-
-    input_month = request.form['birthmonth']
-    for x in fortunes.keys():
-        if x == input_month:
-            return redirect(url_for('fortuneFinder', month=input_month))
-
-    return redirect(url_for('error'))
-
 
 @app.route('/home', methods=['GET', 'POST'])
-def hello_world():
+def hello_world():6  
     if request.method == 'GET':
         return render_template('home.html')
 
