@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1 style="color: black;">Hi! Facebook is totally normal haha.</h1>
+    <div class="container">
+        <h2>Lost Items</h2>
+        {% for fruit in items %}
+        <div class="item">
+            <div class="item-title">{{item}}</div>
+            <div class="item-description">{{item_description}}</div>
+            <div class="item-location">Last seen at: {{last_seen}}</div>
+        <br>
+        </div>
+        {% endfor %}
+    </div>
+        <br>
+
+
+    <a href= "/signout">signout</a>
+        <br>
+
+    <a href= "/lost">report lost item</a>
+        <br>
+
+
+</body>
+</html>
