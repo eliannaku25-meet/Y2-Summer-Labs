@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1 style="color: black;">contact</h1 >
     <h1>{{ user['name'] }}</h1>
     <p>contact: {{ user['email'] }}</p>
+    <form action="/contact/{{item}}" method="POST" style="max-width:500px;margin:auto">
+      <button type="submit" class="btn">Item was retuned</button>
+    </form>
+
 </body>
 </html>

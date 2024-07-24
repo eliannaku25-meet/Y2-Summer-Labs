@@ -6,17 +6,17 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1 style="color: black;">Hi! Facebook is totally normal haha.</h1>
+    <h1 style="color: black;">Lost Items</h1>
     <div class="container">
         <h2>Lost Items</h2>
-    {%for item in items.values() %}
+    {%for item in items %}
        <ul>
-            <li> Item: {{item['item']}}</li>
-            <li> Descrition: {{item['item_description']}}</li>
-            <li> Place I saw it last: {{item['last_seen']}}</li>
+            <li> Item: {{items[item]['item']}}</li>
+            <li> Descrition: {{items[item]['item_description']}}</li>
+            <li> Place I saw it last: {{items[item]['last_seen']}}</li>
 
         </ul>
-            <a href= "{{url_for('contact', owner= item['owner'])}}" >found this item?</a>
+            <a href= "{{url_for('contact', item = item)}}" >found this item?</a>
 
         {%endfor%}
     </div>

@@ -69,8 +69,9 @@ def signup():
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if request.method=='GET':
-        items={}
+        items = db.child("items").get().val()
         return render_template("home.html",items = items)
+
 
 @app.route('/signout')
 def signout():
@@ -100,11 +101,18 @@ def lost():
             print(items)
             return render_template("home.html", items=items)
 
-@app.route('/contact<owner>', methods=['GET', 'POST'])
-def contact(owner):
+@app.route('/contact/<item>', methods=['GET', 'POST'])
+def contact(item):
     if request.method=='GET':
+        owner = db.child("items").child(item).child("owner").get().val()
         owner_profile = db.child("users").child(owner).get().val()
-        return render_template('contact.html', user=owner_profile)
+        return render_template('contact.html', user=owner_profile, item=item)
+    else:
+        db.child("items").child(item).remove()
+        return redirect(url_for('home'))
+
+
+
 
         
 if __name__ == '__main__':
