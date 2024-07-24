@@ -29,8 +29,7 @@ def login():
     else: 
         email = request.form['email']
         password = request.form['password']
-        quotes = []
-        login_session['quotes']= quotes
+#        name = request.form['name']
         login_session.modified = True
         try:
             login_session['user'] = auth.sign_in_with_email_and_password(email, password)
@@ -48,10 +47,16 @@ def signup():
     else: 
         email = request.form['email']
         password = request.form['password']
+        name = request.form['name']
         try:
             user = auth.create_user_with_email_and_password(email, password)
             login_session['user']= user
             user_id = user['localId']
+            db.child("users").child(user_id).set({
+                "name": name,
+                "email": email
+            })
+
             print(login_session['user'])
             print(login_session['user']['localId'])
             login_session.modifed= True
@@ -66,7 +71,7 @@ def signup():
 def home():
     if request.method=='GET':
         items={}
-        return render_template('home.html',items = items)
+        return render_template("home.html",items = items)
     
 @app.route('/lost', methods=['GET', 'POST'])
 def lost():
@@ -77,21 +82,22 @@ def lost():
             item_description = request.form['item-description']
             last_seen = request.form['last-seen']
             user_id = login_session['user']['localId']
-            db.child("users").child(user_id).set({
+            db.child("items").push({
                     "item" : item,
                     "item_description" : item_description,
-                    "last_seen" : last_seen
+                    "last_seen" : last_seen,
+                    "owner": user_id
                     })
             user_id = login_session['user']['localId']
-            items = db.child("users").get().val()
+            items = db.child("items").get().val()
             print(items)
-            return render_template('home.html', items=items)
+            return render_template("home.html", items=items)
 
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
+@app.route('/contact<owner>', methods=['GET', 'POST'])
+def contact(owner):
     if request.method=='GET':
-        return render_template('contact.html')
-
+        owner_profile = db.child("users").child(owner).get().val()
+        return render_template('contact.html', user=owner_profile)
         
 if __name__ == '__main__':
     app.run(debug=True)

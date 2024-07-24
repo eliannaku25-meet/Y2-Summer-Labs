@@ -16,7 +16,7 @@
             <li> Place I saw it last: {{item['last_seen']}}</li>
 
         </ul>
-            <a href= "/contact">found this item?</a>
+            <a href= "{{url_for('contact', owner= item['owner'])}}" >found this item?</a>
 
         {%endfor%}
     </div>
