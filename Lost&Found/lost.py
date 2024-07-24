@@ -65,7 +65,8 @@ def signup():
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if request.method=='GET':
-        return render_template('home.html')
+        items={}
+        return render_template('home.html',items = items)
     
 @app.route('/lost', methods=['GET', 'POST'])
 def lost():
@@ -82,8 +83,14 @@ def lost():
                     "last_seen" : last_seen
                     })
             user_id = login_session['user']['localId']
-            items = db.child("users").child(user_id).get().val()
-            return render_template('home.html', items=items, item=item,item_description=item_description,last_seen=last_seen)
+            items = db.child("users").get().val()
+            print(items)
+            return render_template('home.html', items=items)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method=='GET':
+        return render_template('contact.html')
 
         
 if __name__ == '__main__':

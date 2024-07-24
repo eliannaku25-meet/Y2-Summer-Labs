@@ -9,14 +9,16 @@
     <h1 style="color: black;">Hi! Facebook is totally normal haha.</h1>
     <div class="container">
         <h2>Lost Items</h2>
-        {% for fruit in items %}
-        <div class="item">
-            <div class="item-title">{{item}}</div>
-            <div class="item-description">{{item_description}}</div>
-            <div class="item-location">Last seen at: {{last_seen}}</div>
-        <br>
-        </div>
-        {% endfor %}
+    {%for item in items.values() %}
+       <ul>
+            <li> Item: {{item['item']}}</li>
+            <li> Descrition: {{item['item_description']}}</li>
+            <li> Place I saw it last: {{item['last_seen']}}</li>
+
+        </ul>
+            <a href= "/contact">found this item?</a>
+
+        {%endfor%}
     </div>
         <br>
 
