@@ -29,7 +29,6 @@ def login():
     else: 
         email = request.form['email']
         password = request.form['password']
-#        name = request.form['name']
         login_session.modified = True
         try:
             login_session['user'] = auth.sign_in_with_email_and_password(email, password)
@@ -72,6 +71,14 @@ def home():
     if request.method=='GET':
         items={}
         return render_template("home.html",items = items)
+
+@app.route('/signout')
+def signout():
+    login_session['user']=None
+    auth.current_user=None
+    login_session.modified= True
+    return redirect(url_for('login'))
+
     
 @app.route('/lost', methods=['GET', 'POST'])
 def lost():
@@ -98,6 +105,7 @@ def contact(owner):
     if request.method=='GET':
         owner_profile = db.child("users").child(owner).get().val()
         return render_template('contact.html', user=owner_profile)
+
         
 if __name__ == '__main__':
     app.run(debug=True)
